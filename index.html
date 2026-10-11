@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO & Metadata -->
+    <title>Amazon Clone - Modern Responsive E-Commerce UI</title>
+    <meta
+      name="description"
+      content="Modern Amazon Website Clone built with HTML5, CSS3, and JavaScript. Features responsive layout, interactive search filtering, modular CMS-driven catalog, and cart management."
+    />
+    <meta name="keywords" content="Amazon Clone, Frontend, HTML5, CSS3, JavaScript, Responsive Web Design, CMS Authoring" />
+    <meta name="author" content="Ganesh Badar" />
+    
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:title" content="Amazon Clone UI - HTML5, CSS3 & JavaScript" />
+    <meta property="og:description" content="Responsive Amazon homepage clone with dynamic search, cart system, and mobile drawer." />
+    <meta property="og:type" content="website" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="amazon_logo.png" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Top Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+    <!-- HEADER / NAVIGATION -->
+    <header role="banner">
+      <nav class="navbar" aria-label="Main Navigation">
+        <!-- Logo -->
+        <a href="index.html" class="nav-logo border" aria-label="Amazon Home">
+          <div class="logo" role="img" aria-label="Amazon Logo"></div>
+        </a>
+
+        <!-- Deliver to Location -->
+        <button
+          type="button"
+          class="nav-address border"
+          id="locationBtn"
+          aria-label="Choose delivery location"
+        >
+          <p class="add-first">Deliver to</p>
+          <div class="address-icon">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <span class="add-second" id="currentLocation">India</span>
+          </div>
+        </button>
+
+        <!-- Search Bar with Category Filter -->
+        <form class="nav-search" id="searchForm" role="search">
+          <label for="searchCategory" class="sr-only">Search Category</label>
+          <select class="search-select" id="searchCategory" aria-label="Select category">
+            <option value="all">All</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Home">Home & Kitchen</option>
+            <option value="Beauty">Beauty & Health</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Toys">Toys & Games</option>
+          </select>
+          
+          <label for="searchInput" class="sr-only">Search Products</label>
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Search Amazon.in or filter categories..."
+            autocomplete="off"
+            aria-label="Search Amazon"
+          />
+
+          <button
+            type="button"
+            class="clear-search-btn"
+            id="clearSearchBtn"
+            aria-label="Clear search"
+            style="display: none;"
+          >
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+
+          <button type="submit" class="search-icon" id="searchSubmitBtn" aria-label="Submit search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          </button>
+        </form>
+
+        <!-- Language Selector -->
+        <div class="map-icon border dropdown-trigger" id="langSelector" tabindex="0" role="button" aria-haspopup="true" aria-expanded="false" aria-label="Language selector">
+          <i class="fa-solid fa-earth-americas" aria-hidden="true"></i>
+          <div class="lang-text">
+            <span class="lang-code" id="selectedLang">EN</span>
+            <i class="fa-solid fa-caret-down sort-down" aria-hidden="true"></i>
+          </div>
+          <!-- Language Dropdown -->
+          <ul class="dropdown-menu" id="langMenu" role="menu">
+            <li role="menuitem" data-lang="EN" class="active"><i class="fa-solid fa-check"></i> English - EN</li>
+            <li role="menuitem" data-lang="ES"><i class="fa-solid fa-check"></i> Español - ES</li>
+            <li role="menuitem" data-lang="HI"><i class="fa-solid fa-check"></i> हिन्दी - HI</li>
+            <li role="menuitem" data-lang="FR"><i class="fa-solid fa-check"></i> Français - FR</li>
+          </ul>
+        </div>
+
+        <!-- Account & Lists -->
+        <a href="#signin" class="nav-signin border" id="accountBtn" aria-label="Your Account and Lists">
+          <span class="nav-first">Hello, sign in</span>
+          <span class="nav-second">Account & Lists <i class="fa-solid fa-caret-down" aria-hidden="true"></i></span>
+        </a>
+
+        <!-- Returns & Orders -->
+        <a href="#orders" class="nav-return border" id="ordersBtn" aria-label="Returns and Orders">
+          <span class="nav-first">Returns</span>
+          <span class="nav-second">& Orders</span>
+        </a>
+
+        <!-- Cart with Interactive Badge -->
+        <button
+          type="button"
+          class="nav-cart border"
+          id="cartBtn"
+          aria-label="Shopping Cart, 0 items"
+        >
+          <div class="cart-icon-container">
+            <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+            <span class="cart-badge" id="cartCount">0</span>
+          </div>
+          <span class="cart-label">Cart</span>
+        </button>
+      </nav>
+
+      <!-- SUB-NAVIGATION / SECONDARY BAR -->
+      <div class="panel">
+        <button type="button" class="panel-all border" id="openMenuBtn" aria-label="Open All Categories Menu">
+          <i class="fa-solid fa-bars" aria-hidden="true"></i>
+          <span>All</span>
+        </button>
+
+        <ul class="panel-options" role="menubar">
+          <li role="none"><a role="menuitem" href="#deals" class="panel-link">Today's Deals</a></li>
+          <li role="none"><a role="menuitem" href="#customer-service" class="panel-link">Customer Service</a></li>
+          <li role="none"><a role="menuitem" href="#registry" class="panel-link">Registry</a></li>
+          <li role="none"><a role="menuitem" href="#gift-cards" class="panel-link">Gift Cards</a></li>
+          <li role="none"><a role="menuitem" href="#sell" class="panel-link">Sell</a></li>
+        </ul>
+
+        <div class="panel-deals">
+          <a href="#electronics-deals" class="panel-link highlight-deal">Shop deals in Electronics</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- SIDE NAVIGATION DRAWER (Amazon-style Sidebar) -->
+    <aside id="sideDrawer" class="side-drawer" aria-label="All Categories Menu" aria-hidden="true">
+      <div class="drawer-header">
+        <i class="fa-solid fa-circle-user" aria-hidden="true"></i>
+        <span>Hello, Sign in</span>
+        <button type="button" class="drawer-close-btn" id="closeMenuBtn" aria-label="Close Menu">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="drawer-content">
+        <div class="drawer-section">
+          <h3>Digital Content & Devices</h3>
+          <ul>
+            <li><a href="#amazon-music">Amazon Music <i class="fa-solid fa-chevron-right"></i></a></li>
+            <li><a href="#kindle">Kindle E-readers & Books <i class="fa-solid fa-chevron-right"></i></a></li>
+            <li><a href="#appstore">Amazon Appstore <i class="fa-solid fa-chevron-right"></i></a></li>
+          </ul>
+        </div>
+        <div class="drawer-section">
+          <h3>Shop by Department</h3>
+          <ul>
+            <li><a href="#electronics" data-category="Electronics">Electronics <i class="fa-solid fa-chevron-right"></i></a></li>
+            <li><a href="#home" data-category="Home">Home & Kitchen <i class="fa-solid fa-chevron-right"></i></a></li>
+            <li><a href="#beauty" data-category="Beauty">Beauty & Health <i class="fa-solid fa-chevron-right"></i></a></li>
+            <li><a href="#fashion" data-category="Fashion">Fashion & Apparel <i class="fa-solid fa-chevron-right"></i></a></li>
+            <li><a href="#fitness" data-category="Fitness">Sports & Fitness <i class="fa-solid fa-chevron-right"></i></a></li>
+          </ul>
+        </div>
+        <div class="drawer-section">
+          <h3>Programs & Features</h3>
+          <ul>
+            <li><a href="#gift-cards">Gift Cards</a></li>
+            <li><a href="#amazon-live">Amazon Live</a></li>
+            <li><a href="#international">International Shopping</a></li>
+          </ul>
+        </div>
+        <div class="drawer-section">
+          <h3>Help & Settings</h3>
+          <ul>
+            <li><a href="#account">Your Account</a></li>
+            <li><a href="#customer-service">Customer Service</a></li>
+            <li><a href="#signin">Sign Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+    <div id="drawerOverlay" class="drawer-overlay" tabindex="-1"></div>
+
+    <!-- CART SLIDE-OUT DRAWER -->
+    <aside id="cartDrawer" class="cart-drawer" aria-label="Shopping Cart Drawer" aria-hidden="true">
+      <div class="cart-drawer-header">
+        <h2><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</h2>
+        <button type="button" class="cart-close-btn" id="closeCartBtn" aria-label="Close Cart">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="cart-drawer-body" id="cartDrawerItems">
+        <!-- Rendered dynamically via JavaScript -->
+        <div class="empty-cart-view">
+          <i class="fa-solid fa-basket-shopping empty-icon"></i>
+          <p>Your Amazon Cart is empty.</p>
+          <small>Check out items below and click "Add to Cart" to start shopping!</small>
+        </div>
+      </div>
+      <div class="cart-drawer-footer" id="cartDrawerFooter">
+        <div class="cart-subtotal">
+          <span>Subtotal (<span id="cartTotalItems">0</span> items):</span>
+          <strong id="cartTotalPrice">$0.00</strong>
+        </div>
+        <button type="button" class="btn-checkout" id="checkoutBtn">Proceed to Checkout</button>
+        <button type="button" class="btn-clear-cart" id="clearCartBtn">Clear Cart</button>
+      </div>
+    </aside>
+    <div id="cartOverlay" class="drawer-overlay" tabindex="-1"></div>
+
+    <!-- LOCATION MODAL -->
+    <div id="locationModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 id="modalTitle">Choose your delivery location</h3>
+          <button type="button" class="modal-close" id="closeLocationModal" aria-label="Close modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-subtitle">Delivery options and delivery speeds may vary for different locations.</p>
+          <div class="form-group">
+            <label for="countrySelect">Select Country / Region:</label>
+            <select id="countrySelect" class="form-control">
+              <option value="India">India</option>
+              <option value="United States">United States</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Canada">Canada</option>
+              <option value="Germany">Germany</option>
+              <option value="Australia">Australia</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="pincodeInput">Or enter a postal code:</label>
+            <div class="pincode-row">
+              <input type="text" id="pincodeInput" class="form-control" placeholder="e.g. 110001 or 90210" maxlength="10" />
+              <button type="button" class="btn-apply" id="applyPincodeBtn">Apply</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-save-location" id="saveLocationBtn">Done</button>
+        </div>
+      </div>
+    </div>
+    <div id="modalOverlay" class="drawer-overlay" tabindex="-1"></div>
+
+    <!-- MAIN CONTENT -->
+    <main id="main-content" role="main">
+      <!-- HERO BANNER SECTION -->
+      <section class="hero-section" aria-label="Hero Promotion Banner">
+        <div class="hero-msg" role="region" aria-label="Regional Notice">
+          <p>
+            You are currently browsing the modern <strong>Amazon Clone UI</strong>.
+            You can also shop on Amazon India for millions of products with fast local delivery.
+            <a href="https://www.amazon.in" target="_blank" rel="noopener noreferrer">
+              Click here to visit amazon.in <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+            </a>
+          </p>
+        </div>
+      </section>
+
+      <!-- FILTER STATUS BAR (Appears on Search / Filter) -->
+      <section class="filter-status-bar" id="filterStatusBar" style="display: none;">
+        <span id="filterStatusText">Showing all results</span>
+        <button type="button" id="resetFilterBtn" class="btn-reset-filter">
+          <i class="fa-solid fa-rotate-left"></i> Reset Filter
+        </button>
+      </section>
+
+      <!-- CMS-DRIVEN PRODUCT SHOP SECTION -->
+      <section class="shop-section" id="shopSection" aria-label="Product Categories & Deals">
+        <!-- Rendered dynamically by app.js (CMS Hydration) with fallback markup -->
+
+        <!-- Card 1 -->
+        <article class="box" data-id="1" data-category="Home" data-title="Refresh your space">
+          <div class="box-content">
+            <span class="box-badge">Popular</span>
+            <h2>Refresh your space</h2>
+            <div class="box-img" style="background-image: url('box1_image.jpg')" role="img" aria-label="Refresh your space"></div>
+            <div class="box-meta">
+              <span class="box-price">$29.99</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.7 (1.2k)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="1">Add to Cart</button>
+              <a href="#see-more-1" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="box" data-id="2" data-category="Beauty" data-title="Health & Personal Care">
+          <div class="box-content">
+            <span class="box-badge">Essential</span>
+            <h2>Health & Personal Care</h2>
+            <div class="box-img" style="background-image: url('box2_image.jpg')" role="img" aria-label="Health and Personal Care"></div>
+            <div class="box-meta">
+              <span class="box-price">$18.50</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.6 (950)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="2">Add to Cart</button>
+              <a href="#see-more-2" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="box" data-id="3" data-category="Home" data-title="Give your home a makeover">
+          <div class="box-content">
+            <span class="box-badge">Trending</span>
+            <h2>Give your home a makeover</h2>
+            <div class="box-img" style="background-image: url('box3_image.jpg')" role="img" aria-label="Give your home a makeover"></div>
+            <div class="box-meta">
+              <span class="box-price">$45.00</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.8 (2.4k)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="3">Add to Cart</button>
+              <a href="#see-more-3" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="box" data-id="4" data-category="Electronics" data-title="Electronics & Devices">
+          <div class="box-content">
+            <span class="box-badge">Top Deal</span>
+            <h2>Electronics & Devices</h2>
+            <div class="box-img" style="background-image: url('box4_image.jpg')" role="img" aria-label="Electronics and Devices"></div>
+            <div class="box-meta">
+              <span class="box-price">$89.99</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.9 (4.1k)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="4">Add to Cart</button>
+              <a href="#see-more-4" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="box" data-id="5" data-category="Beauty" data-title="Beauty Picks">
+          <div class="box-content">
+            <span class="box-badge">Featured</span>
+            <h2>Beauty Picks</h2>
+            <div class="box-img" style="background-image: url('box5_image.jpg')" role="img" aria-label="Beauty Picks"></div>
+            <div class="box-meta">
+              <span class="box-price">$24.99</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.5 (820)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="5">Add to Cart</button>
+              <a href="#see-more-5" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="box" data-id="6" data-category="Home" data-title="Shop Pet supplies">
+          <div class="box-content">
+            <span class="box-badge">Best Value</span>
+            <h2>Shop Pet supplies</h2>
+            <div class="box-img" style="background-image: url('box6_image.jpg')" role="img" aria-label="Shop Pet supplies"></div>
+            <div class="box-meta">
+              <span class="box-price">$15.99</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.7 (1.5k)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="6">Add to Cart</button>
+              <a href="#see-more-6" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 7 -->
+        <article class="box" data-id="7" data-category="Toys" data-title="New arrivals in Toys">
+          <div class="box-content">
+            <span class="box-badge">New</span>
+            <h2>New arrivals in Toys</h2>
+            <div class="box-img" style="background-image: url('box7_image.jpg')" role="img" aria-label="New arrivals in Toys"></div>
+            <div class="box-meta">
+              <span class="box-price">$19.99</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.8 (670)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="7">Add to Cart</button>
+              <a href="#see-more-7" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 8 -->
+        <article class="box" data-id="8" data-category="Fashion" data-title="Discover fashion trends">
+          <div class="box-content">
+            <span class="box-badge">Hot</span>
+            <h2>Discover fashion trends</h2>
+            <div class="box-img" style="background-image: url('box8_image.jpg')" role="img" aria-label="Discover fashion trends"></div>
+            <div class="box-meta">
+              <span class="box-price">$39.00</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.4 (3.1k)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="8">Add to Cart</button>
+              <a href="#see-more-8" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 9 -->
+        <article class="box" data-id="9" data-category="Fitness" data-title="For your Fitness Needs">
+          <div class="box-content">
+            <span class="box-badge">Trending</span>
+            <h2>For your Fitness Needs</h2>
+            <div class="box-img" style="background-image: url('box9_image.jpg')" role="img" aria-label="For your Fitness Needs"></div>
+            <div class="box-meta">
+              <span class="box-price">$34.50</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.7 (890)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="9">Add to Cart</button>
+              <a href="#see-more-9" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 10 -->
+        <article class="box" data-id="10" data-category="Electronics" data-title="Activity Trackers & Smartwatches">
+          <div class="box-content">
+            <span class="box-badge">Smart Tech</span>
+            <h2>Activity Trackers & Smartwatches</h2>
+            <div class="box-img" style="background-image: url('box10_image.jpg')" role="img" aria-label="Activity trackers and smartwatches"></div>
+            <div class="box-meta">
+              <span class="box-price">$79.99</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.8 (5.2k)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="10">Add to Cart</button>
+              <a href="#see-more-10" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 11 -->
+        <article class="box" data-id="11" data-category="Home" data-title="Home & Kitchen Under $30">
+          <div class="box-content">
+            <span class="box-badge">Under $30</span>
+            <h2>Home & Kitchen Under $30</h2>
+            <div class="box-img" style="background-image: url('box11_image.jpg')" role="img" aria-label="Home and Kitchen under 30 dollars"></div>
+            <div class="box-meta">
+              <span class="box-price">$22.95</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.6 (1.8k)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="11">Add to Cart</button>
+              <a href="#see-more-11" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 12 -->
+        <article class="box" data-id="12" data-category="Electronics" data-title="Shop Laptops & Tablets">
+          <div class="box-content">
+            <span class="box-badge">Premium</span>
+            <h2>Shop Laptops & Tablets</h2>
+            <div class="box-img" style="background-image: url('box12_image.jpg')" role="img" aria-label="Shop Laptops and Tablets"></div>
+            <div class="box-meta">
+              <span class="box-price">$499.00</span>
+              <span class="box-rating"><i class="fa-solid fa-star"></i> 4.9 (6.3k)</span>
+            </div>
+            <div class="box-actions">
+              <button type="button" class="btn-add-cart" data-id="12">Add to Cart</button>
+              <a href="#see-more-12" class="see-more-link">See more</a>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- EMPTY SEARCH STATE (Hidden by default) -->
+      <section class="no-results-view" id="noResultsView" style="display: none;">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <h3>No matching products found</h3>
+        <p>Try checking your spelling or using more general search terms.</p>
+        <button type="button" class="btn-reset-filter" id="noResultsResetBtn">Show All Products</button>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+      <!-- Back to Top Button -->
+      <button type="button" class="foot-panel1" id="backToTopBtn" aria-label="Back to top of page">
+        Back to Top <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+      </button>
+
+      <!-- Navigation Links Grid -->
+      <div class="foot-panel2">
+        <div class="foot-column">
+          <h3>Get to Know Us</h3>
+          <ul>
+            <li><a href="#careers">Careers</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#about">About Amazon</a></li>
+            <li><a href="#investors">Investor Relations</a></li>
+            <li><a href="#devices">Amazon Devices</a></li>
+            <li><a href="#science">Amazon Science</a></li>
+          </ul>
+        </div>
+
+        <div class="foot-column">
+          <h3>Make Money with Us</h3>
+          <ul>
+            <li><a href="#sell">Sell products on Amazon</a></li>
+            <li><a href="#business">Sell on Amazon Business</a></li>
+            <li><a href="#apps">Sell apps on Amazon</a></li>
+            <li><a href="#affiliate">Become an Affiliate</a></li>
+            <li><a href="#advertise">Advertise Your Products</a></li>
+            <li><a href="#self-publish">Self-Publish with Us</a></li>
+            <li><a href="#hub">Host an Amazon Hub</a></li>
+          </ul>
+        </div>
+
+        <div class="foot-column">
+          <h3>Amazon Payment Products</h3>
+          <ul>
+            <li><a href="#business-card">Amazon Business Card</a></li>
+            <li><a href="#points">Shop with Points</a></li>
+            <li><a href="#reload">Reload Your Balance</a></li>
+            <li><a href="#currency">Amazon Currency Converter</a></li>
+          </ul>
+        </div>
+
+        <div class="foot-column">
+          <h3>Let Us Help You</h3>
+          <ul>
+            <li><a href="#covid">Amazon and COVID-19</a></li>
+            <li><a href="#account">Your Account</a></li>
+            <li><a href="#orders">Your Orders</a></li>
+            <li><a href="#shipping">Shipping Rates & Policies</a></li>
+            <li><a href="#returns">Returns & Replacements</a></li>
+            <li><a href="#devices-manage">Manage Content & Devices</a></li>
+            <li><a href="#help">Help Center</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Brand Logo & Settings -->
+      <div class="foot-panel3">
+        <div class="logo" role="img" aria-label="Amazon Logo"></div>
+        <div class="foot-selectors">
+          <button type="button" class="foot-btn" id="footLangBtn">
+            <i class="fa-solid fa-globe"></i> English
+          </button>
+          <button type="button" class="foot-btn" id="footCurrencyBtn">
+            $ USD - U.S. Dollar
+          </button>
+          <button type="button" class="foot-btn" id="footCountryBtn">
+            <i class="fa-solid fa-flag-usa"></i> United States
+          </button>
+        </div>
+      </div>
+
+      <!-- Legal Links & Copyright -->
+      <div class="foot-panel4">
+        <div class="pages">
+          <a href="#conditions">Conditions of Use</a>
+          <a href="#privacy">Privacy Notice</a>
+          <a href="#ads">Consumer Health Data Privacy</a>
+          <a href="#choices">Your Ads Privacy Choices</a>
+        </div>
+        <div class="copyright">
+          &copy; 1996-2026, Amazon.com, Inc. or its affiliates &bull; Built with HTML5, CSS3 & JavaScript
+        </div>
+      </div>
+    </footer>
+
+    <!-- Vanilla JavaScript Logic -->
+    <script src="app.js"></script>
+  </body>
+</html>
