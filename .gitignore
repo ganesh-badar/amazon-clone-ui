@@ -1,6 +1,9 @@
 # Private local developer guides (do not push)
 LOCAL_DEVELOPER_GUIDE.md
+developer_guide.html
+*.pdf
 
 # OS generated files
 .DS_Store
 Thumbs.db
+
